@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBufAllocator
 import io.netty.channel.Channel
 import net.rsprox.patch.NativeClientType
 import net.rsprox.patch.PatchResult
+import net.rsprox.patch.native.NativePatchCriteria
 import net.rsprox.patch.native.NativePatcher
 import net.rsprox.proxy.binary.BinaryHeader
 import net.rsprox.proxy.binary.credentials.BinaryCredentials
@@ -41,7 +42,7 @@ import net.rsprox.proxy.config.TEMP_CLIENTS_DIRECTORY
 import net.rsprox.proxy.config.registerConnection
 import net.rsprox.proxy.connection.ClientTypeDictionary
 import net.rsprox.proxy.connection.ProxyConnectionContainer
-import net.rsprox.proxy.downloader.NativeClientDownloader
+import net.rsprox.proxy.downloader.JagexNativeClientDownloader
 import net.rsprox.proxy.filters.DefaultPropertyFilterSetStore
 import net.rsprox.proxy.futures.asCompletableFuture
 import net.rsprox.proxy.huffman.HuffmanProvider
@@ -392,7 +393,7 @@ public class ProxyService(
                 OperatingSystem.MAC -> NativeClientType.MAC
                 else -> throw IllegalStateException()
             }
-        val binary = NativeClientDownloader.download(nativeClientType)
+        val binary = JagexNativeClientDownloader.download(nativeClientType)
         val extension = if (binary.extension.isNotEmpty()) ".${binary.extension}" else ""
         val stamp = System.currentTimeMillis()
         val patched = TEMP_CLIENTS_DIRECTORY.resolve("${binary.nameWithoutExtension}-$stamp$extension")
@@ -400,18 +401,23 @@ public class ProxyService(
 
         // For now, directly just download, patch and launch the C++ client
         val patcher = NativePatcher()
+        val criteria =
+            NativePatchCriteria
+                .Builder(nativeClientType)
+                .rsaModulus(rsa.publicKey.modulus.toString(16))
+                .javConfig("http://127.0.0.1:$HTTP_SERVER_PORT/$javConfigEndpoint")
+                .worldList("http://127.0.0.1:$HTTP_SERVER_PORT/$worldlistEndpoint")
+                .port(port)
+                .build()
         val result =
             patcher.patch(
                 patched,
-                rsa.publicKey.modulus.toString(16),
-                "http://127.0.0.1:$HTTP_SERVER_PORT/$javConfigEndpoint",
-                "http://127.0.0.1:$HTTP_SERVER_PORT/$worldlistEndpoint",
-                port,
-                nativeClientType,
+                criteria,
             )
         check(result is PatchResult.Success) {
             "Failed to patch"
         }
+        checkNotNull(result.oldModulus)
         registerConnection(
             ConnectionInfo(
                 ClientType.Native,
