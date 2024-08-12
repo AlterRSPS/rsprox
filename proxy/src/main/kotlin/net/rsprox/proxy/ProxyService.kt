@@ -64,7 +64,7 @@ import org.newsclub.net.unix.AFUNIXSocketAddress
 import java.io.File
 import java.io.IOException
 import java.math.BigInteger
-import java.net.URL
+import java.net.URI
 import java.nio.file.Files
 import java.nio.file.LinkOption
 import java.nio.file.Path
@@ -581,7 +581,7 @@ public class ProxyService(
     private fun loadJavConfig(): JavConfig {
         val url = "http://oldschool.runescape.com/jav_config.ws"
         return runCatching("Failed to load jav_config.ws from $url") {
-            val config = JavConfig(URL(url))
+            val config = JavConfig(URI(url).toURL())
             logger.debug { "Jav config loaded from $url" }
             config
         }
@@ -591,7 +591,7 @@ public class ProxyService(
         return runCatching("Failed to instantiate world list provider") {
             val provider =
                 DynamicWorldListProvider(
-                    URL(url),
+                    URI(url).toURL(),
                     properties.getProperty(WORLDLIST_REFRESH_SECONDS),
                 )
             logger.debug { "World list provider loaded from $url" }

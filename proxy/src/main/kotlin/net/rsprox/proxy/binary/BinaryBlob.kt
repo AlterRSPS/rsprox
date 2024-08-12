@@ -24,7 +24,7 @@ import net.rsprox.shared.StreamDirection
 import net.rsprox.shared.filters.PropertyFilterSetStore
 import net.rsprox.shared.indexing.NopBinaryIndex
 import net.rsprox.transcriber.BaseMessageConsumerContainer
-import java.net.URL
+import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -170,7 +170,7 @@ public data class BinaryBlob(
     private fun loadJavConfig(): JavConfig? {
         val url = "https://oldschool.runescape.com/jav_config.ws"
         return runCatching {
-            val config = JavConfig(URL(url))
+            val config = JavConfig(URI(url).toURL())
             logger.debug { "Jav config loaded from $url" }
             config
         }.getOrNull()

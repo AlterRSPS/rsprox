@@ -25,7 +25,7 @@ import net.rsprox.proxy.config.ProxyProperty
 import net.rsprox.proxy.worlds.WorldListProvider
 import java.io.IOException
 import java.net.HttpURLConnection
-import java.net.URL
+import java.net.URI
 
 public class HttpServerHandler(
     private val worldListProvider: WorldListProvider,
@@ -129,7 +129,7 @@ public class HttpServerHandler(
 
             else -> {
                 if (uri.startsWith("/gamepack_")) {
-                    val forwarded = URL("http://oldschool1.runescape.com$uri")
+                    val forwarded = URI("http://oldschool1.runescape.com$uri").toURL()
                     val con = forwarded.openConnection() as HttpURLConnection
                     con.requestMethod = "GET"
                     val result = con.inputStream.readAllBytes()
