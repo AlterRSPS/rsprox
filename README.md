@@ -14,6 +14,20 @@ A technical breakdown of the processes involved can be found in [issues/RSProx](
 ## Guide
 Below is a quick guide demonstrating how to use RSProx.
 
+## Guide to patch OSRS Client to connect to RSPS
+Just open `.setup.bat` with notepad, and change `YOUR_MODULUS_KEY` With your Modulus key that you have in `Modulus` File in Alter's Root.
+Or just run in terminal (Ofc just change the modulus key): `./gradlew patch --args="-version=226.1 -type=win -javconfig=https://cdn.rsprox.net/javconfig_local_226.ws -worldlist=https://cdn.rsprox.net/example_worldlist.ws -varpcount=15000 -siteurl=rsprox.net -name=RSProx -modulus=YOUR_MODULUS_KEY"`
+New file should appear within root directory of the project.
+As for documentation you can read more on: [PATCHER.md](https://github.com/AlterRSPS/rsprox/blob/master/PATCHER.md)
+
+![ModulusLoc](https://raw.githubusercontent.com/AlterRSPS/Resources/main/docs/resources/ReadMe_Alter/tutor10.png)
+> [!NOTE]
+> Make sure you copy entire modulus key.
+> Don't be this guy:
+
+[![Wrong Address](https://img.youtube.com/vi/E6mK2aZbuSo/0.jpg)](https://www.youtube.com/watch?v=E6mK2aZbuSo)
+
+
 ### Cloning
 As of right now, RSProx can only be used by cloning the repository yourself.
 
@@ -74,18 +88,18 @@ Jagex Accounts are now fully supported. There are two ways of using a Jagex
 account:
 
 1. Using the built-in authentication system. RSProx allows you to login via
-your browser to authenticate yourself for the proxy tool, allowing easy access
-to all the characters under that Jagex account. You can also link multiple
-different Jagex accounts to make the process of switching accounts easier.
+   your browser to authenticate yourself for the proxy tool, allowing easy access
+   to all the characters under that Jagex account. You can also link multiple
+   different Jagex accounts to make the process of switching accounts easier.
 2. The Default, legacy behaviour. In this mode, you need to export the
-credentials.properties file in `user.home/.runelite/credentials.properties` via
-[this](https://github.com/runelite/runelite/wiki/Using-Jagex-Accounts).
-Once you have exported the credentials.properties as shown in the tutorial,
-the RSProx tool will always load them up from `user.home/.runelite/credentials.properties`.
-If you wish to stop using a Jagex Account in this Default mode,
-simply delete the credentials file. In this Default mode, you may only have
-one character/account, as it always reads from the same file when launching
-the client.
+   credentials.properties file in `user.home/.runelite/credentials.properties` via
+   [this](https://github.com/runelite/runelite/wiki/Using-Jagex-Accounts).
+   Once you have exported the credentials.properties as shown in the tutorial,
+   the RSProx tool will always load them up from `user.home/.runelite/credentials.properties`.
+   If you wish to stop using a Jagex Account in this Default mode,
+   simply delete the credentials file. In this Default mode, you may only have
+   one character/account, as it always reads from the same file when launching
+   the client.
 
 ### Security
 We have taken many measures to ensure the players can securely use this tool,
@@ -112,12 +126,12 @@ as to avoid people maliciously using them.
 Below is a small task list showing a rough breakdown of what the tool will consist of, and how far the progress is at any given moment.
 
 - [ ] Patch Tool
-  - [x] Native (Win)
-    - [x] Supports Unix via `wine`
-  - [ ] ~~Native (Mac)~~ (Automated patching too fragile)
-  - [x] RuneLite (All Operating systems)
-  - [ ] RuneLite Forks
-  - [ ] ~~HDOS~~ (Cancelled, too difficult to patch)
+	- [x] Native (Win)
+		- [x] Supports Unix via `wine`
+	- [ ] ~~Native (Mac)~~ (Automated patching too fragile)
+	- [x] RuneLite (All Operating systems)
+	- [ ] RuneLite Forks
+	- [ ] ~~HDOS~~ (Cancelled, too difficult to patch)
 - [x] World identification via localhost address
 - [x] World-hop host address injection
 - [x] Login re-encoding & obtaining ISAAC Seed
@@ -125,25 +139,25 @@ Below is a small task list showing a rough breakdown of what the tool will consi
 - [x] Binary header building
 - [x] Binary blob reader/writer
 - [x] Privacy concerns
-  - [x] Bank Pin erasure (4-digit code)
-  - [x] Private message content erasure
-  - [x] Login tokens in URL open packets
-  - [x] 192-bit UID (linked to account recoveries)
-  - [x] Site settings (linked to account recoveries)
-  - [x] Erases all keyboard presses
+	- [x] Bank Pin erasure (4-digit code)
+	- [x] Private message content erasure
+	- [x] Login tokens in URL open packets
+	- [x] 192-bit UID (linked to account recoveries)
+	- [x] Site settings (linked to account recoveries)
+	- [x] Erases all keyboard presses
 - [x] Graphical User Interface (Proxy tool)
 - [x] Graphical User Interface (Live Transcriber)
 - [x] Live cache loading
 - [x] Historical cache loading
 - [ ] Public archive
-  - [ ] Automated binary blob uploading at the end of a session
-  - [x] Indexing of binary files
-  - [ ] Ability to download any binary blobs
+	- [ ] Automated binary blob uploading at the end of a session
+	- [x] Indexing of binary files
+	- [ ] Ability to download any binary blobs
 - [x] Decoders (Every revision starting from 223)
 - [x] Transcriber
 - [ ] Launchers
-  - [ ] Proxy launcher/updater
-  - [x] RuneLite launcher (necessary to avoid detection)
+	- [ ] Proxy launcher/updater
+	- [x] RuneLite launcher (necessary to avoid detection)
 
 [actions-badge]: https://github.com/blurite/rsprox/actions/workflows/ci.yml/badge.svg
 [actions]: https://github.com/blurite/rsprox/actions
